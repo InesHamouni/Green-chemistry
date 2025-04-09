@@ -1,1 +1,1 @@
-# Green-chemistry-ppchem-project-
+# Green-chemistry (ppchem-project)
