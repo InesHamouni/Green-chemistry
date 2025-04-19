@@ -1,15 +1,31 @@
-![Project Logo](assets/banner.png)
+![Project Logo](assets/green.jpeg)
 
 ![Coverage Status](assets/coverage-badge.svg)
 
 <h1 align="center">
-Green-chemistry
+🌱 Green Chemistry 🌱
 </h1>
 
 <br>
 
+ 
+## 🧑‍🔬 Team
+ 
+- Clara Veron
+- Inès Hamouni 
+- Thomas Cohen 
+- Edward Vondoderer
 
-None
+## 📖 Contents
+
+- [Features](#-features)
+- [Usage](#-usage)
+- [Installation](#-Setup)
+- [Development_installation](#-Development installation)
+- [License](#-license)
+
+
+## 🌱 Features
 
 ## 🔥 Usage
 
@@ -56,7 +72,7 @@ git add *
 git add .*
 git commit -m "Initial commit" 
 git branch -M main
-git remote add origin git@github.com:None/Green-chemistry.git 
+git remote add origin git@github.com:ineshamouni/Green-chemistry.git 
 git push -u origin main
 ```
 
@@ -70,10 +86,8 @@ To install the package, run
 
 ### Run tests and coverage
 
-```
-(conda_env) $ pip install tox
-(conda_env) $ tox
-```
 
 
 
+
+## 📖 Licence
