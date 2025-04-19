@@ -10,9 +10,10 @@
 🌱 Green Chemistry 
 </h1>
 
-<p align="center">
-  <strong>Using Programming to Reduce the Environmental and Human Impact of Chemical Reactions, Inspired by the 12 Principles of Green Chemistry</strong>
-</p>
+
+<h2>
+<strong>Using Programming to Reduce the Environmental and Human Impact of Chemical Reactions, Inspired by the 12 Principles of Green Chemistry</strong>
+</h2>
 
 <br>
 
