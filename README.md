@@ -7,8 +7,10 @@
 </p>
 
 <h1 align="center">
-🌱 Green Chemistry 🌱
+🌱 Green Chemistry 
 </h1>
+
+Using Programming to Reduce the Environmental and Human Impact of Chemical Reactions, Inspired by the 12 Principles of Green Chemistry
 
 <br>
 
