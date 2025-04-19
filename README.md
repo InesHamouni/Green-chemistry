@@ -1,8 +1,10 @@
 <p align="center">
-  <img src="assets/green.jpeg" alt="Project Logo" width="300"/>
+  <img src="assets/green.jpeg" alt="Project Logo" width="400"/>
 </p>
 
-![Coverage Status](assets/coverage-badge.svg)
+<p align="center">
+  <img src="assets/coverage-badge.svg" alt="Coverage Status"/>
+</p>
 
 <h1 align="center">
 🌱 Green Chemistry 🌱
@@ -23,7 +25,7 @@
 - [Features](#-features)
 - [Usage](#-usage)
 - [Installation](#-Setup)
-- [Development_installation](#-Development installation)
+- [Development installation](#-development-installation)
 - [License](#-license)
 
 
