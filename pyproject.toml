@@ -29,8 +29,8 @@ classifiers = [
 dynamic = ["version"]
 
 [project.urls]
-source = "https://github.com/None/Green-chemistry"
-tracker = "https://github.com/None/Green-chemistry/issues"
+source = "https://github.com/InesHamouni/Green-chemistry-ppchem-project-"
+tracker = "https://github.com/InesHamouni/Green-chemistry-ppchem-project-/issues"
 
 [project.optional-dependencies]
 test = [
