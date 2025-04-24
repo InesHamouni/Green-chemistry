@@ -1,4 +1,4 @@
-[build-system] 
+[build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
@@ -12,8 +12,12 @@ dependencies = [
     # "rdkit",
 ]
 authors = [
-    {name = "None", email = "None"}
+    {name = "Clara Veron", email = "clara.veron@epfl.ch"},
+    {name = "Inès Hamouni", email = "ines.hamouni@epfl.ch"},
+    {name = "Thomas Cohen", email = "thomas.cohen@epfl.ch"},
+    {name = "Edward Vandoderer", email = "edward.vondoderer@epfl.ch"}
 ]
+
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
