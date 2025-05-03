@@ -16,6 +16,7 @@ def query_pubchem_api(compound_name):
         st.error(f"Error fetching data for {compound_name}: {response.status_code}")
         return None
 
+# function to add compound name and get property
 def add_compound(compound_name):
     compound_data = query_pubchem_api(compound_name)
 
@@ -26,6 +27,18 @@ def add_compound(compound_name):
         st.success(f"Compound '{compound_name}' added!")
     else:
         st.error(f"Failed to fetch data for {compound_name}")
+
+# function to add solvant name and get property
+def add_solvants(solvants_name):
+    solvants_data = query_pubchem_api(solvants_name)
+
+    print(solvants_data) # debugging
+    
+    if solvants_data:
+        st.session_state.compounds.append(solvants_data)
+        st.success(f"Compound '{solvants_name}' added!")
+    else:
+        st.error(f"Failed to fetch data for {solvants_name}")
     
 def analyze():
     # Placeholder for analysis logic
@@ -54,10 +67,22 @@ with st.container():
             add_compound(compound_name)
             st.rerun()
     with col2:
-        st.write('# solvants')
-        if st.button("Add Solvant"):
+        st.write('# Solvants')
+        if "solvants" not in st.session_state:
+            st.session_state.solvants = []
+            st.write("No solvants found. Please add some solvants.")
+        else:    
+            for solvants in st.session_state.solvants:
+                st.write(solvants.get("MolecularFormula"))
+
+        st.text_input("Enter solvants name", key="solvants_name")
+        if st.button("Add Solvants"):
+            solvants_name = st.session_state.solvants_name
+            add_solvants(solvants_name)
+            st.rerun()
+        
             None
-        st.write('# catalyzers')
+        st.write('# Catalyzers')
         if st.button("Add catalyzer"):
             None        
        
