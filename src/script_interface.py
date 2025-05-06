@@ -35,7 +35,7 @@ def add_solvants(solvants_name):
     print(solvants_data) # debugging
     
     if solvants_data:
-        st.session_state.compounds.append(solvants_data)
+        st.session_state.solvants.append(solvants_data)
         st.success(f"Compound '{solvants_name}' added!")
     else:
         st.error(f"Failed to fetch data for {solvants_name}")
