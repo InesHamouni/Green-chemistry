@@ -25,6 +25,7 @@ def add_compound(compound_name):
     if compound_data:
         st.session_state.compounds.append(compound_data)
         st.success(f"Compound '{compound_name}' added!")
+
     else:
         st.error(f"Failed to fetch data for {compound_name}")
 
@@ -39,6 +40,18 @@ def add_solvants(solvants_name):
         st.success(f"Compound '{solvants_name}' added!")
     else:
         st.error(f"Failed to fetch data for {solvants_name}")
+
+# function to add catalyzer name and get property
+def add_catalyzer(catalyzer_name):
+    catalyzer_data = query_pubchem_api(catalyzer_name)
+
+    print(catalyzer_data) # debugging
+    
+    if catalyzer_data:
+        st.session_state.catalyzer.append(catalyzer_data)
+        st.success(f"Compound '{catalyzer_name}' added!")
+    else:
+        st.error(f"Failed to fetch data for {catalyzer_name}")
     
 def analyze():
     # Placeholder for analysis logic
@@ -51,6 +64,8 @@ def analyze():
 
 with st.container():
     col1, col2, col3 = st.columns(3)
+
+# compound addition in first column
     with col1:
         st.write("# Compound list")
 
@@ -66,6 +81,8 @@ with st.container():
             compound_name = st.session_state.compound_name
             add_compound(compound_name)
             st.rerun()
+
+# solvant addition in the interface in the second column        
     with col2:
         st.write('# Solvants')
         if "solvants" not in st.session_state:
@@ -82,12 +99,23 @@ with st.container():
             st.rerun()
         
             None
+
+    # catalyzer addition in the interface in the second column        
         st.write('# Catalyzers')
-        if st.button("Add catalyzer"):
-            None        
-       
+        if "catalyzer" not in st.session_state:
+            st.session_state.catalyzer = []
+            st.write("No catalyzer found. Please add some catalyzers.")
+        else:
+            for catalyzer in st.session_state.catalyzer:
+                st.write(catalyzer.get("MolecularFormula"))
+                           
+        st.text_input("Enter catalyzer name", key="catalyzer_name")
+        if st.button("Add Catalyzer"):
+            catalyzer_name = st.session_state.catalyzer_name
+            add_catalyzer(catalyzer_name)
+            st.rerun()
 
-
+# addition of conditions
     with col3:
         st.write('# Conditions') 
         temp = st.slider("Temperature (°C)", 0, 300, 25)
