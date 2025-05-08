@@ -1,0 +1,17 @@
+### test 1
+GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2244/property/MolecularFormula,Title/json
+
+### test 2
+GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/benzoic%20acid/property/MolecularFormula/json
+
+### test 3
+GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/formula/C7H6O2/cids/json
+
+### get long running query results
+GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/benzoic%20acid/property/MolecularFormula/json
+
+### re-call a long running query
+GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/listkey/592175017213129230/cids/JSON
+
+### get a list of all available properties
+GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/methanol/JSON
