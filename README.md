@@ -72,7 +72,7 @@ If you need jupyter lab, install it
 
 Initialize Git (only for the first time). 
 
-Note: You should have create an empty repository on `https://github.com:None/Green-chemistry`.
+Note: You should have create an empty repository on `https://github.com:ineshamouni/Green-chemistry`.
 
 ```
 git init
@@ -94,8 +94,13 @@ To install the package, run
 
 ### Run tests and coverage
 
-
+(green_chemistry) $ pip install tox
+(green_chemistry) $ tox
 
 
 
 ## 📖 Licence
+
+This project is under the MIT licence.
+The MIT License is a permissive open-source license that allows free use, modification, and distribution of the software. To have an overview of it, please refer to the LICENSE file included in the repository.
+
