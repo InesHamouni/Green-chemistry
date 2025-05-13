@@ -82,7 +82,7 @@ with st.container():
             add_compound(compound_name)
             st.rerun()
 
-# solvant addition in the interface in the second column        
+# solvent addition in the interface in the second column
     with col2:
         st.write('# Solvants')
         if "solvants" not in st.session_state:
