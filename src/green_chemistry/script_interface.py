@@ -224,7 +224,7 @@ with st.container():
         if "atom_economy" in result:
             st.write(f"**Atom Economy:** {result['atom_economy']}")
         if "get_metal_center" in result:
-            st.write(f"**Catalyst Metal Analysis:** {result['get_metal_center']}")
+            st.write(f"**Catalyst Metal Analysis:** {result['get_metal_impact']}")
     else:
         st.write("No analysis results available.")
 
