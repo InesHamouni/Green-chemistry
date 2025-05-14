@@ -104,7 +104,6 @@ def analyze():
     st.write("Product mass:", product_mass)
 
 
-
     try:
         atom_econ_value, atom_econ_verdict = atom_economy(product_mass, reactant_masses)
         # Apply get_metal_impact to each catalyzer
