@@ -1,5 +1,5 @@
 ### test 1
-GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2244/property/MolecularFormula,Title/json
+GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2244/property/MolecularFormula,Title,MolecularWeight/json
 
 ### test 2
 GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/benzoic%20acid/property/MolecularFormula/json
@@ -15,3 +15,4 @@ GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/listkey/59217501721312923
 
 ### get a list of all available properties
 GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/methanol/JSON
+

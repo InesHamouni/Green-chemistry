@@ -2,11 +2,17 @@ import streamlit as st
 import urllib.parse
 import requests
 
+# import of our functions
+from atom_economy import atom_economy
+from temperature_efficiency import temperature_efficiency
+from pressure_efficiency import pressure_efficiency
+from metal_center import get_metal_impact
+
 @st.cache_data
 def query_pubchem_api(compound_name):
     # make a GET HTTP request to the PubChem API
     urlencode_compound_name = urllib.parse.quote(compound_name)
-    url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{urlencode_compound_name}/property/MolecularFormula,Title/JSON"
+    url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{urlencode_compound_name}/property/MolecularFormula,MolecularWeight,Title/JSON"
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
@@ -28,6 +34,20 @@ def add_compound(compound_name):
 
     else:
         st.error(f"Failed to fetch data for {compound_name}")
+
+# function to add product name and get property
+def add_product(product_name):
+        product_data = query_pubchem_api(product_name)
+        
+        print(product_data) # debugging
+        
+        if product_data:
+            st.session_state.product.append(product_data)
+            st.success(f"Product '{product_name}' added!")
+
+        else:
+            st.error(f"Failed to fetch data for {product_name}")
+
 
 # function to add solvant name and get property
 def add_solvants(solvants_name):
@@ -54,20 +74,63 @@ def add_catalyzer(catalyzer_name):
         st.error(f"Failed to fetch data for {catalyzer_name}")
     
 def analyze():
-    # Placeholder for analysis logic
+    # Ensure data is present
+    compounds = st.session_state.get("compounds", [])
+    products = st.session_state.get("product", [])
+    catalyzers = st.session_state.get("catalyzer", [])
+
+    st.write("Compounds:", compounds)
+    st.write("Products:", products)
+    st.write('Catalyzers:', catalyzers)
+
+    if not compounds or not products:
+        st.error("Please add at least one compound and one product to perform analysis.")
+        return None
+
+    # Get molar masses of compounds (reactants)
+    reactant_masses = [
+    float(compound.get("MolecularWeight")) 
+    for compound in compounds 
+    if compound.get("MolecularWeight") is not None ]
+
+    # Get molar mass of the main product (assume first product)
+    product_mass = float(products[0].get("MolecularWeight"))
+
+    if not product_mass:
+        st.error("Product mass not available.")
+        return None
+    
+    st.write("Reactant masses:", reactant_masses)
+    st.write("Product mass:", product_mass)
+
+
+
+    try:
+        atom_econ_value, atom_econ_verdict = atom_economy(product_mass, reactant_masses)
+        # Apply get_metal_impact to each catalyzer
+        metal_center_analysis = [
+            get_metal_impact(metal) for metal in catalyzers
+        ]
+
+    except ValueError as e:
+        st.error(str(e))
+        return None
+    
+
+    # You could later add temperature/pressure/catalyst analysis here
+
     st.success("Analysis complete!")
-    analyze_results = {
-        "toxicity": "Low",
-        "atom_economy": "High",
+    return {
+        "atom_economy": f"{atom_econ_value}% - {atom_econ_verdict}",
+        "get_metal_impact": "\n\n".join(metal_center_analysis)
     }
-    return analyze_results
+
 
 with st.container():
     col1, col2, col3 = st.columns(3)
-
 # compound addition in first column
     with col1:
-        st.write("# Compound list")
+        st.write("# Compounds")
 
         if "compounds" not in st.session_state:
             st.session_state.compounds = []
@@ -75,12 +138,36 @@ with st.container():
         else:    
             for compound in st.session_state.compounds:
                 st.write(compound.get("MolecularFormula"))
+            if st.button("Remove compound"):
+                st.session_state.compounds.pop()
+                st.rerun() 
 
         st.text_input("Enter compound name", key="compound_name")
         if st.button("Add Compound"):
             compound_name = st.session_state.compound_name
             add_compound(compound_name)
             st.rerun()
+
+        #Product list
+        st.write("# Products")
+
+        if "product" not in st.session_state:
+            st.session_state.product = []
+            st.write("No products found. Please add some products.")
+        else:    
+            for product in st.session_state.product:
+                st.write(product.get("MolecularFormula"))
+            if st.button("Remove product"):
+                st.session_state.product.pop()
+                st.rerun()            
+
+        st.text_input("Enter product name", key="product_name")
+        if st.button("Add Product"):
+            product_name = st.session_state.product_name
+            add_product(product_name)
+            st.rerun()
+
+        
 
 # solvent addition in the interface in the second column
     with col2:
@@ -89,8 +176,11 @@ with st.container():
             st.session_state.solvants = []
             st.write("No solvants found. Please add some solvants.")
         else:    
-            for solvants in st.session_state.solvants:
-                st.write(solvants.get("MolecularFormula"))
+            for solvant in st.session_state.solvants:
+                st.write(solvant.get("MolecularFormula"))
+            if st.button("Remove solvant"):
+                st.session_state.solvant.pop()
+                st.rerun() 
 
         st.text_input("Enter solvants name", key="solvants_name")
         if st.button("Add Solvants"):
@@ -108,6 +198,9 @@ with st.container():
         else:
             for catalyzer in st.session_state.catalyzer:
                 st.write(catalyzer.get("MolecularFormula"))
+                if st.button("Remove catalyzer"):
+                    st.session_state.catalyzer.pop()
+                    st.rerun()
                            
         st.text_input("Enter metal center name", key="catalyzer_name")
         if st.button("Add Catalyzer"):
@@ -129,7 +222,10 @@ with st.container():
     st.write("# Analysis results")
     result = st.session_state.get("result")
     if result:
-        st.write(f"Toxicity: {result['toxicity']}")
-        st.write(f"Atom Economy: {result['atom_economy']}")
+        if "atom_economy" in result:
+            st.write(f"**Atom Economy:** {result['atom_economy']}")
+        if "get_metal_center" in result:
+            st.write(f"**Catalyst Metal Analysis:** {result['get_metal_center']}")
     else:
         st.write("No analysis results available.")
+
