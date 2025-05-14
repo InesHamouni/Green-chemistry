@@ -109,7 +109,7 @@ with st.container():
             for catalyzer in st.session_state.catalyzer:
                 st.write(catalyzer.get("MolecularFormula"))
                            
-        st.text_input("Enter catalyzer name", key="catalyzer_name")
+        st.text_input("Enter metal center name", key="catalyzer_name")
         if st.button("Add Catalyzer"):
             catalyzer_name = st.session_state.catalyzer_name
             add_catalyzer(catalyzer_name)
