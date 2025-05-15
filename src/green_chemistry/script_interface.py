@@ -108,7 +108,7 @@ def analyze():
         atom_econ_value, atom_econ_verdict = atom_economy(product_mass, reactant_masses)
         # Apply get_metal_impact to each catalyzer
         metal_center_analysis = [
-            get_metal_impact(metal) for metal in catalyzers
+            get_metal_impact(metal_data.get('MolecularFormula') for metal_data in catalyzers)
         ]
 
     except ValueError as e:
@@ -121,12 +121,12 @@ def analyze():
     st.success("Analysis complete!")
     return {
         "atom_economy": f"{atom_econ_value}% - {atom_econ_verdict}",
-        "get_metal_impact": "\n\n".join(metal_center_analysis)
+        "get_metal_impact": f"{metal_center_analysis}"
     }
 
 
 with st.container():
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns([1,1,1])
 # compound addition in first column
     with col1:
         st.write("# Compounds")
@@ -210,7 +210,7 @@ with st.container():
 # addition of conditions
     with col3:
         st.write('# Conditions') 
-        temp = st.slider("Temperature (°C)", 0, 300, 25)
+        temp = st.slider("Temperature (°C)", -100, 300, 25)
         pressure = st.slider("Pressure (bar)", 0, 50, 1)
         if (st.button("Run Analysis")):
             result = analyze()
