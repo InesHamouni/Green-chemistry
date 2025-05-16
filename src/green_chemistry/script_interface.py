@@ -120,10 +120,24 @@ def analyze():
 
     try:
         atom_econ_value, atom_econ_verdict = atom_economy(product_mass, reactant_masses)
+
         # Apply get_metal_impact to each catalyzer
-        metal_center_analysis = [
-            get_metal_impact(metal_data.get('MolecularFormula')) for metal_data in catalyzers
-        ]
+        metal_analysis_lines = []
+        for metal_data in catalyzers:
+            formula = metal_data.get('MolecularFormula')
+            if formula:
+                analysis = get_metal_impact(formula)
+                if analysis and not analysis.startswith("No data"):
+                    # Nettoyage et formatage en une ligne
+                    lines = analysis.split('\n')
+                    metal_name = lines[0].replace('---', '').strip()
+                    properties = ' | '.join(
+                        f"{line.split(':')[0].strip()}: {line.split(':')[1].strip()}" 
+                        for line in lines[1:] if ':' in line
+                    )
+                    metal_analysis_lines.append(f"{metal_name}{properties}")
+        
+        metal_analysis_str = " | ".join(metal_analysis_lines) if metal_analysis_lines else "No metal catalyst data"
 
         temperature_assessment = None
         if temperature is not None:
@@ -145,7 +159,7 @@ def analyze():
 
     return {
         "atom_economy": f"{atom_econ_value}% - {atom_econ_verdict}",
-        "get_metal_impact": f"{metal_center_analysis}",
+        "metal_analysis": metal_analysis_str,
         "temperature_efficiency": temperature_assessment,
         "pressure_efficiency": pressure_assessment,
     }
@@ -260,14 +274,14 @@ with st.container():
         if "atom_economy" in result:
             st.write(f"**Atom Economy:** {result['atom_economy']}")
 
-        if "get_metal_impact" in result:
-            st.write(f"**Catalyst Metal Analysis:** {result['get_metal_impact']}")
+        if "metal_analysis" in result:
+            st.markdown(f"**Catalyst Metal Analysis:** {result['metal_analysis']}")
 
         if "temperature_efficiency" in result and result["temperature_efficiency"]:
             st.write(f"**Temperature conditions:** {result['temperature_efficiency']}")
 
         if "pressure_efficiency" in result and result["pressure_efficiency"]:
-            st.write(f"**Temperature conditions:** {result['pressure_efficiency']}")
+            st.write(f"**Pressure conditions:** {result['pressure_efficiency']}")
 
     else:
         st.write("No analysis results available.")
