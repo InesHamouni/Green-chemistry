@@ -78,6 +78,7 @@ def analyze():
     compounds = st.session_state.get("compounds", [])
     products = st.session_state.get("product", [])
     catalyzers = st.session_state.get("catalyzer", [])
+    temperature = st.session_state.get("temperature")
 
     st.write("Compounds:", compounds)
     st.write("Products:", products)
@@ -89,9 +90,10 @@ def analyze():
 
     # Get molar masses of compounds (reactants)
     reactant_masses = [
-    float(compound.get("MolecularWeight")) 
-    for compound in compounds 
-    if compound.get("MolecularWeight") is not None ]
+        float(compound.get("MolecularWeight"))
+        for compound in compounds
+        if compound.get("MolecularWeight") is not None
+    ]
 
     # Get molar mass of the main product (assume first product)
     product_mass = float(products[0].get("MolecularWeight"))
@@ -108,20 +110,32 @@ def analyze():
         atom_econ_value, atom_econ_verdict = atom_economy(product_mass, reactant_masses)
         # Apply get_metal_impact to each catalyzer
         metal_center_analysis = [
-            get_metal_impact(metal_data.get('MolecularFormula') for metal_data in catalyzers)
+            get_metal_impact(metal_data.get('MolecularFormula')) for metal_data in catalyzers
         ]
+
+        temperature_assessment = None
+        if temperature is not None:
+            temperature_assessment = temperature_efficiency(temperature)
+
+        pressure_assessment = None
+        if pressure is not None:
+            pressure_assessment = pressure_efficiency(pressure)
+
 
     except ValueError as e:
         st.error(str(e))
         return None
-    
+
 
     # You could later add temperature/pressure/catalyst analysis here
 
     st.success("Analysis complete!")
+
     return {
         "atom_economy": f"{atom_econ_value}% - {atom_econ_verdict}",
-        "get_metal_impact": f"{metal_center_analysis}"
+        "get_metal_impact": f"{metal_center_analysis}",
+        "temperature_efficiency": temperature_assessment,
+        "pressure_efficiency": pressure_assessment,
     }
 
 
@@ -186,8 +200,7 @@ with st.container():
             solvants_name = st.session_state.solvants_name
             add_solvants(solvants_name)
             st.rerun()
-        
-            None
+
 
     # catalyzer addition in the interface in the second column        
         st.write('# Catalyzers')
@@ -212,6 +225,9 @@ with st.container():
         st.write('# Conditions') 
         temp = st.slider("Temperature (°C)", -100, 300, 25)
         pressure = st.slider("Pressure (bar)", 0, 50, 1)
+        st.session_state.temperature = temp
+        st.session_state.pressure = pressure
+
         if (st.button("Run Analysis")):
             result = analyze()
             st.session_state.result = result
@@ -225,6 +241,11 @@ with st.container():
             st.write(f"**Atom Economy:** {result['atom_economy']}")
         if "get_metal_impact" in result:
             st.write(f"**Catalyst Metal Analysis:** {result['get_metal_impact']}")
+        if "temperature_efficiency" in result and result["temperature_efficiency"]:
+            st.write(f"**Temperature conditions:** {result['temperature_efficiency']}")
+        if "pressure_efficiency" in result and result["pressure_efficiency"]:
+            st.write(f"**Temperature conditions:** {result['pressure_efficiency']}")
+
     else:
         st.write("No analysis results available.")
 

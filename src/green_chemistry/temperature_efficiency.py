@@ -17,10 +17,10 @@ def temperature_efficiency(temperature):
    """
 
     if temperature < 100:
-      assessment_T = "Temperature conditions: low energy consumption"
+      assessment_T = "low energy consumption"
     elif 100 <= temperature < 200:
-      assessment_T = "Temperature conditions: moderate energy consumption"
+      assessment_T = "moderate energy consumption"
     elif temperature >= 200:
-     assessment_T = "Temperature conditions: high energy consumption"
+     assessment_T = "high energy consumption"
 
     return assessment_T
