@@ -187,8 +187,8 @@ def get_metal_impact(metal):
 
     m = metals_data[metal]
     return (
-        f" {m['Name']} ({metal})"
-        f" **Human toxicity**: {m['Toxicity']}|"
-        f" **Environmental impact**: {m['Ecotoxicity']}|"
+        f" {m['Name']} ({metal})   "
+        f" **Human toxicity**: {m['Toxicity']}     |     "
+        f" **Environmental impact**: {m['Ecotoxicity']}     |     "
         f" **Availability**: {m['Availability']}"
     )

@@ -8,6 +8,18 @@ from temperature_efficiency import temperature_efficiency
 from pressure_efficiency import pressure_efficiency
 from metal_center import get_metal_impact
 
+# allows the page to field all the space
+st.markdown("""
+    <style>
+        .block-container {
+            max-width: 100% !important;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 @st.cache_data
 def query_pubchem_api(compound_name):
     # make a GET HTTP request to the PubChem API
@@ -140,7 +152,7 @@ def analyze():
 
 
 with st.container():
-    col1, col2, col3 = st.columns([1,1,1])
+    col1, spacer1, col2, spacer2, col3 = st.columns([1.2, 0.1, 1.2, 0.1, 1.2])
 # compound addition in first column
     with col1:
         st.write("# Compounds")
@@ -228,21 +240,32 @@ with st.container():
         st.session_state.temperature = temp
         st.session_state.pressure = pressure
 
-        if (st.button("Run Analysis")):
-            result = analyze()
-            st.session_state.result = result
-            st.rerun()
- 
+        st.markdown("## ")
+
+        with st.container():
+            col_left, col_center, col_right = st.columns([1, 1, 1])
+            with col_center:
+                if st.button("RUN ANALYSIS", key="run_analysis", help="Click to start analysis", type="primary"):
+                    result = analyze()
+                    st.session_state.result = result
+                    st.rerun()
+
+st.markdown("---")
+
 with st.container():
     st.write("# Analysis results")
     result = st.session_state.get("result")
+
     if result:
         if "atom_economy" in result:
             st.write(f"**Atom Economy:** {result['atom_economy']}")
+
         if "get_metal_impact" in result:
             st.write(f"**Catalyst Metal Analysis:** {result['get_metal_impact']}")
+
         if "temperature_efficiency" in result and result["temperature_efficiency"]:
             st.write(f"**Temperature conditions:** {result['temperature_efficiency']}")
+
         if "pressure_efficiency" in result and result["pressure_efficiency"]:
             st.write(f"**Temperature conditions:** {result['pressure_efficiency']}")
 
