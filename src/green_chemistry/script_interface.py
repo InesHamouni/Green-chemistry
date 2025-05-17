@@ -210,7 +210,7 @@ with st.container():
 
 # solvent addition in the interface in the second column
     with col2:
-        st.write('# Solvants')
+        st.write('# Solvants / Auxiliaries')
         if "solvants" not in st.session_state:
             st.session_state.solvants = []
             st.write("No solvants found. Please add some solvants.")
