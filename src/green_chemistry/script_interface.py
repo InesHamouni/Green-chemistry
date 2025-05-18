@@ -7,6 +7,10 @@ from atom_economy import atom_economy
 from temperature_efficiency import temperature_efficiency
 from pressure_efficiency import pressure_efficiency
 from metal_center import get_metal_impact
+from convert_pictograms import render_svg
+from picto import get_hazard_from_pugview_data
+from picto import extract_pictogram_urls
+from picto import main
 
 # allows the page to field all the space
 st.markdown("""
@@ -146,6 +150,48 @@ def analyze():
         pressure_assessment = None
         if pressure is not None:
             pressure_assessment = pressure_efficiency(pressure)
+
+        st.subheader("Hazard Pictograms")
+
+        # Get and render pictograms for compounds
+        st.subheader("Compounds Hazard Pictograms")
+        for compound_data in compounds:
+            compound_name = compound_data.get("Title")
+            if compound_name:
+                hazard_urls = get_hazard_from_pugview_data(compound_name)
+                render_svg(hazard_urls)
+            else:
+                st.info(f"Compound name not available to fetch hazard pictograms for {compound_data.get('MolecularFormula', 'unknown')}.")
+
+        # Get and render pictograms for products
+        st.subheader("Products Hazard Pictograms")
+        for product_data in products:
+            product_name = product_data.get("Title")
+            if product_name:
+                hazard_urls = get_hazard_from_pugview_data(product_name)
+                render_svg(hazard_urls)
+            else:
+                st.info(f"Product name not available to fetch hazard pictograms for {product_data.get('MolecularFormula', 'unknown')}.")
+
+        # Get and render pictograms for solvents
+        st.subheader("Solvents Hazard Pictograms")
+        for solvant_data in solvants:
+            solvant_name = solvant_data.get("Title")
+            if solvant_name:
+                hazard_urls = get_hazard_from_pugview_data(solvant_name)
+                render_svg(hazard_urls)
+            else:
+                st.info(f"Solvent name not available to fetch hazard pictograms for {solvant_data.get('MolecularFormula', 'unknown')}.")
+
+        # Get and render pictograms for catalyzers
+        st.subheader("Catalyzers Hazard Pictograms")
+        for catalyzer_data in catalyzers:
+            catalyzer_name = catalyzer_data.get("Title")
+            if catalyzer_name:
+                hazard_urls = get_hazard_from_pugview_data(catalyzer_name)
+                render_svg(hazard_urls)
+            else:
+                st.info(f"Catalyzer name not available to fetch hazard pictograms for {catalyzer_data.get('MolecularFormula', 'unknown')}.")
 
 
     except ValueError as e:
