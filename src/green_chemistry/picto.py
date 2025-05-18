@@ -117,9 +117,10 @@ def extract_pictogram_urls(hazard_data):
         print("Warning: Unexpected hazard data format.")
     return list(unique_urls)
 
-def main(compound_name: str):
+def get_pictos(compound_name: str):
     # Get hazard data
     hazard_data = get_hazard_from_pugview_data(compound_name)
+    pictogram_urls = []
     if hazard_data and 'Error' not in hazard_data:
         print(f"Compound: {compound_name}")
         print("Hazard Statements:")
@@ -138,5 +139,7 @@ def main(compound_name: str):
     elif hazard_data:
         print(f"Error: {hazard_data['Error']}")
 
+    return pictogram_urls
+
 if __name__ == "__main__":
-    main("lead")
+    get_pictos("lead")
