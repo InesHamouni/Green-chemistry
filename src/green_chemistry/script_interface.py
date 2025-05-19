@@ -63,17 +63,17 @@ def add_product(product_name):
             st.error(f"Failed to fetch data for {product_name}")
 
 
-# function to add solvant name and get property
-def add_solvants(solvants_name):
-    solvants_data = query_pubchem_api(solvants_name)
+# function to add solvent name and get property
+def add_solvents(solvents_name):
+    solvents_data = query_pubchem_api(solvents_name)
 
-    print(solvants_data) # debugging
+    print(solvents_data) # debugging
     
-    if solvants_data:
-        st.session_state.solvants.append(solvants_data)
-        st.success(f"Compound '{solvants_name}' added!")
+    if solvents_data:
+        st.session_state.solvents.append(solvents_data)
+        st.success(f"Compound '{solvents_name}' added!")
     else:
-        st.error(f"Failed to fetch data for {solvants_name}")
+        st.error(f"Failed to fetch data for {solvents_name}")
 
 # function to add catalyzer name and get property
 def add_catalyzer(catalyzer_name):
@@ -92,7 +92,7 @@ def analyze():
     # Ensure data is present
     compounds = st.session_state.get("compounds", [])
     products = st.session_state.get("product", [])
-    solvants = st.session_state.get("solvants", [])
+    solvents = st.session_state.get("solvents", [])
     catalyzers = st.session_state.get("catalyzer", [])
     temperature = st.session_state.get("temperature")
 
@@ -147,7 +147,7 @@ def analyze():
         
         # create empty list for pictos   
         compounds_urls = []
-        solvants_urls = []
+        solvents_urls = []
         products_urls = []
         catalyzers_urls = []
 
@@ -165,10 +165,10 @@ def analyze():
                 products_urls.extend(get_pictos(product_name))
 
         # Get pictograms for solvents
-        for solvant_data in solvants:
-            solvant_name = solvant_data.get("Title")
-            if solvant_name:
-                solvants_urls.extend(get_pictos(solvant_name))
+        for solvent_data in solvents:
+            solvent_name = solvent_data.get("Title")
+            if solvent_name:
+                solvents_urls.extend(get_pictos(solvent_name))
 
         # Get pictograms for catalyzers
         for catalyzer_data in catalyzers:
@@ -190,7 +190,7 @@ def analyze():
         "pressure_efficiency": pressure_assessment,
         "compounds_pictos": compounds_urls,
         "products_pictos": products_urls,
-        "solvants_pictos": solvants_urls,
+        "solvents_pictos": solvents_urls,
         "catalyzers_pictos": catalyzers_urls,
     }
 
@@ -241,20 +241,20 @@ with st.container():
 # solvent addition in the interface in the second column
     with col2:
         st.write('# Solvents / Auxiliaries')
-        if "solvants" not in st.session_state:
-            st.session_state.solvants = []
+        if "solvents" not in st.session_state:
+            st.session_state.solvents = []
             st.write("No solvents found. Please add some solvents.")
         else:    
-            for solvant in st.session_state.solvants:
-                st.write(solvant.get("MolecularFormula"))
+            for solvent in st.session_state.solvents:
+                st.write(solvent.get("MolecularFormula"))
             if st.button("Remove solvent"):
-                st.session_state.solvant.pop()
+                st.session_state.solvents.pop()
                 st.rerun() 
 
-        st.text_input("Enter solvents name", key="solvants_name")
-        if st.button("Add Solvaents"):
-            solvants_name = st.session_state.solvants_name
-            add_solvants(solvants_name)
+        st.text_input("Enter solvents name", key="solvents_name")
+        if st.button("Add Solvents"):
+            solvents_name = st.session_state.solvents_name
+            add_solvents(solvents_name)
             st.rerun()
 
 
@@ -344,17 +344,17 @@ with st.container():
         else:
             st.info("Product names don't have hazard pictograms.")
         
-        if "solvants_pictos" in result and st.session_state.get("solvants"):
+        if "solvents_pictos" in result and st.session_state.get("solvents"):
             st.subheader("Solvents Hazard Pictograms")
-            solvant_names = [s.get("Title") for s in st.session_state["solvants"]]
-            solvant_pictos = result["solvants_pictos"]
+            solvent_names = [s.get("Title") for s in st.session_state["solvents"]]
+            solvent_pictos = result["solvents_pictos"]
 
-            step = len(solvant_pictos) // len(solvant_names) if solvant_names else 0
+            step = len(solvent_pictos) // len(solvent_names) if solvent_names else 0
 
-            for i, name in enumerate(solvant_names):
+            for i, name in enumerate(solvent_names):
                 st.markdown(f"**{name}**")
-                solvant_svg_list = solvant_pictos[i*step:(i+1)*step]
-                render_svg(solvant_svg_list)
+                solvent_svg_list = solvent_pictos[i*step:(i+1)*step]
+                render_svg(solvent_svg_list)
         else:
             st.info("Solvent names don't have hazard pictograms.")
 
