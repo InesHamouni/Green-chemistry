@@ -314,29 +314,63 @@ with st.container():
             st.write(f"**Pressure conditions:** {result['pressure_efficiency']}")
     
         st.write("## Hazard Pictograms")
-        if "compounds_pictos" in result:
+        if "compounds_pictos" in result and st.session_state.get("compounds"):
             st.subheader("Compounds Hazard Pictograms")
-            render_svg(result["compounds_pictos"])
+            compound_names = [c.get("Title") for c in st.session_state["compounds"]]
+            compound_pictos = result["compounds_pictos"]
+
+            step = len(compound_pictos) // len(compound_names) if compound_names else 0
+
+            for i, name in enumerate(compound_names):
+                st.markdown(f"**{name}**")
+                compound_svg_list = compound_pictos[i*step:(i+1)*step]
+                render_svg(compound_svg_list)
         else:
-            st.info(f"Compound name doesn't have hazard pictograms")
+            st.info("Compound names don't have hazard pictograms.")
+
         
-        if "products_pictos" in result:
+        
+        if "products_pictos" in result and st.session_state.get("product"):
             st.subheader("Products Hazard Pictograms")
-            render_svg(result["products_pictos"])
+            product_names = [p.get("Title") for p in st.session_state["product"]]
+            product_pictos = result["products_pictos"]
+
+            step = len(product_pictos) // len(product_names) if product_names else 0
+
+            for i, name in enumerate(product_names):
+                st.markdown(f"**{name}**")
+                product_svg_list = product_pictos[i*step:(i+1)*step]
+                render_svg(product_svg_list)
         else:
-            st.info(f"Product name doesn't have hazard pictograms")
+            st.info("Product names don't have hazard pictograms.")
         
-        if "solvants_pictos" in result:
+        if "solvants_pictos" in result and st.session_state.get("solvants"):
             st.subheader("Solvents Hazard Pictograms")
-            render_svg(result["solvants_pictos"])
+            solvant_names = [s.get("Title") for s in st.session_state["solvants"]]
+            solvant_pictos = result["solvants_pictos"]
+
+            step = len(solvant_pictos) // len(solvant_names) if solvant_names else 0
+
+            for i, name in enumerate(solvant_names):
+                st.markdown(f"**{name}**")
+                solvant_svg_list = solvant_pictos[i*step:(i+1)*step]
+                render_svg(solvant_svg_list)
         else:
-            st.info(f"Solvent name doesn't have hazard pictograms")
-        
-        if "catalyzers_pictos" in result:
+            st.info("Solvent names don't have hazard pictograms.")
+
+        if "catalyzers_pictos" in result and st.session_state.get("catalyzer"):
             st.subheader("Catalyzers Hazard Pictograms")
-            render_svg(result["catalyzers_pictos"])
+            catalyzer_names = [c.get("Title") for c in st.session_state["catalyzer"]]
+            catalyzer_pictos = result["catalyzers_pictos"]
+
+            step = len(catalyzer_pictos) // len(catalyzer_names) if catalyzer_names else 0
+
+            for i, name in enumerate(catalyzer_names):
+                st.markdown(f"**{name}**")
+                catalyzer_svg_list = catalyzer_pictos[i*step:(i+1)*step]
+                render_svg(catalyzer_svg_list)
         else:
-            st.info(f"Catalyzer name doesn't have hazard pictograms")
+            st.info("Catalyzer names don't have hazard pictograms.")
 
     else:
         st.write("No analysis results available.")
