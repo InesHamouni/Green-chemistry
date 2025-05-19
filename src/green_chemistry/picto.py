@@ -28,8 +28,6 @@ def get_hazard_from_pugview_data(compound_name: str):
         # Extract relevant information
         if 'PropertyTable' in data and 'Properties' in data['PropertyTable']:
             properties = data['PropertyTable']['Properties'][0]
-            canonical_smiles = properties.get('CanonicalSMILES', 'Not Found')
-            molecular_formula = properties.get('MolecularFormula', 'Not Found')
 
             # Fetch safety and hazard information using PUG View
             url_safety = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/{properties['CID']}/JSON?heading=Safety+and+Hazards"
@@ -74,49 +72,6 @@ def get_hazard_from_pugview_data(compound_name: str):
         print(f"An unexpected error occurred: {e}")
         return {'Error': f'An unexpected error occurred: {e}'}
     
-# def get_hazard_from_pugview_data(compound_name: str):
-#     """
-#     Retrieves pictogram hazard data from PubChem for a given compound name.
-#     Returns a list of pictogram blocks (StringWithMarkup), or a dict with 'Error'.
-#     """
-#     try:
-#         # Étape 1: récupérer le CID
-#         cid_url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{compound_name}/cids/JSON"
-#         cid_response = requests.get(cid_url)
-#         cid_response.raise_for_status()
-#         cid_data = cid_response.json()
-#         cid_list = cid_data.get("IdentifierList", {}).get("CID", [])
-#         if not cid_list:
-#             return {"Error": f"No CID found for '{compound_name}'"}
-#         cid = cid_list[0]
-
-#         # Étape 2: récupérer les données de sécurité
-#         url_safety = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/{cid}/JSON?heading=Safety+and+Hazards"
-#         response_safety = requests.get(url_safety)
-#         response_safety.raise_for_status()
-#         safety_data = response_safety.json()
-
-#         # Étape 3: extraire les pictogrammes
-#         sections = safety_data.get("Record", {}).get("Section", [])
-#         for section in sections:
-#             if section.get("TOCHeading") == "Safety and Hazards":
-#                 for sub_section in section.get("Section", []):
-#                     if sub_section.get("TOCHeading") == "Hazards Identification":
-#                         for inner in sub_section.get("Section", []):
-#                             if inner.get("TOCHeading") == "GHS Classification":
-#                                 for phrase in inner.get("Information", []):
-#                                     if phrase.get("Name") == "Pictogram(s)":
-#                                         return phrase.get("Value", {}).get("StringWithMarkup", [])
-#         return []  # Aucun pictogramme trouvé
-
-#     except requests.exceptions.RequestException as e:
-#         return {"Error": f"Request failed: {e}"}
-#     except json.JSONDecodeError:
-#         return {"Error": "Invalid JSON response"}
-#     except Exception as e:
-#         return {"Error": f"Unexpected error: {e}"}
-
-
 
 def extract_pictogram_urls(hazard_data):
     """
@@ -141,8 +96,15 @@ def extract_pictogram_urls(hazard_data):
         print("Warning: Unexpected hazard data format.")
     return list(unique_urls)
 
+
 def get_pictos(compound_name: str):
-    # Get hazard data
+
+    """ Get compound name as an argument and stock in a list the pictograms found 
+    with the get_hazard_from_pugview_data function 
+    
+    And with the extract_pictogram_urls we only get the urls from the jason file
+    return by the previous function as a list """
+
     hazard_data = get_hazard_from_pugview_data(compound_name)
     pictogram_urls = []
     if hazard_data and 'Error' not in hazard_data:
@@ -165,5 +127,6 @@ def get_pictos(compound_name: str):
 
     return pictogram_urls
 
+# test for function
 if __name__ == "__main__":
     get_pictos("lead")

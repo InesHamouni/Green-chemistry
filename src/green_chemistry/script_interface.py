@@ -1,8 +1,9 @@
+# import the needed package
 import streamlit as st
 import urllib.parse
 import requests
 
-# import of our functions
+# import our functions
 from atom_economy import atom_economy
 from temperature_efficiency import temperature_efficiency
 from pressure_efficiency import pressure_efficiency
@@ -21,7 +22,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
+# Call of PubChem API
 @st.cache_data
 def query_pubchem_api(compound_name):
     # make a GET HTTP request to the PubChem API
@@ -36,7 +37,7 @@ def query_pubchem_api(compound_name):
         st.error(f"Error fetching data for {compound_name}: {response.status_code}")
         return None
 
-# function to add compound name and get property
+# function to add molecular formula from chemical name of compound
 def add_compound(compound_name):
     compound_data = query_pubchem_api(compound_name)
 
@@ -49,7 +50,7 @@ def add_compound(compound_name):
     else:
         st.error(f"Failed to fetch data for {compound_name}")
 
-# function to add product name and get property
+# function to add molecular formula from chemical name of product
 def add_product(product_name):
         product_data = query_pubchem_api(product_name)
         
@@ -63,7 +64,7 @@ def add_product(product_name):
             st.error(f"Failed to fetch data for {product_name}")
 
 
-# function to add solvent name and get property
+# function to add molecular formula from chemical name of solvents
 def add_solvents(solvents_name):
     solvents_data = query_pubchem_api(solvents_name)
 
@@ -75,7 +76,7 @@ def add_solvents(solvents_name):
     else:
         st.error(f"Failed to fetch data for {solvents_name}")
 
-# function to add catalyzer name and get property
+# function to add molecular formula from chemical name of catalyzers
 def add_catalyzer(catalyzer_name):
     catalyzer_data = query_pubchem_api(catalyzer_name)
 
@@ -114,7 +115,6 @@ def analyze():
         st.error("Product mass not available.")
         return None
     
-
     try:
         atom_econ_value, atom_econ_verdict = atom_economy(product_mass, reactant_masses)
 
