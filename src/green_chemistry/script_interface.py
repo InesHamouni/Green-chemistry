@@ -88,17 +88,15 @@ def add_catalyzer(catalyzer_name):
         st.success(f"Compound '{catalyzer_name}' added!")
     else:
         st.error(f"Failed to fetch data for {catalyzer_name}")
-    
+
 def analyze():
     # Ensure data is present
     compounds = st.session_state.get("compounds", [])
     products = st.session_state.get("product", [])
     catalyzers = st.session_state.get("catalyzer", [])
+    solvants = st.session_state.get("solvants", [])
     temperature = st.session_state.get("temperature")
-
-    st.write("Compounds:", compounds)
-    st.write("Products:", products)
-    st.write('Catalyzers:', catalyzers)
+    pressure = st.session_state.get("pressure")
 
     if not compounds or not products:
         st.error("Please add at least one compound and one product to perform analysis.")
@@ -117,89 +115,34 @@ def analyze():
     if not product_mass:
         st.error("Product mass not available.")
         return None
-    
-    st.write("Reactant masses:", reactant_masses)
-    st.write("Product mass:", product_mass)
-
 
     try:
+        # Atom economy
         atom_econ_value, atom_econ_verdict = atom_economy(product_mass, reactant_masses)
 
-        # Apply get_metal_impact to each catalyzer
+        # Catalyst impact
         metal_analysis_lines = []
         for metal_data in catalyzers:
             formula = metal_data.get('MolecularFormula')
             if formula:
                 analysis = get_metal_impact(formula)
                 if analysis and not analysis.startswith("No data"):
-                    # Nettoyage et formatage en une ligne
                     lines = analysis.split('\n')
                     metal_name = lines[0].replace('---', '').strip()
                     properties = ' | '.join(
-                        f"{line.split(':')[0].strip()}: {line.split(':')[1].strip()}" 
+                        f"{line.split(':')[0].strip()}: {line.split(':')[1].strip()}"
                         for line in lines[1:] if ':' in line
                     )
                     metal_analysis_lines.append(f"{metal_name}{properties}")
-        
         metal_analysis_str = " | ".join(metal_analysis_lines) if metal_analysis_lines else "No metal catalyst data"
 
-        temperature_assessment = None
-        if temperature is not None:
-            temperature_assessment = temperature_efficiency(temperature)
-
-        pressure_assessment = None
-        if pressure is not None:
-            pressure_assessment = pressure_efficiency(pressure)
-
-        st.subheader("Hazard Pictograms")
-
-        # Get and render pictograms for compounds
-        st.subheader("Compounds Hazard Pictograms")
-        for compound_data in compounds:
-            compound_name = compound_data.get("Title")
-            if compound_name:
-                hazard_urls = get_hazard_from_pugview_data(compound_name)
-                render_svg(hazard_urls)
-            else:
-                st.info(f"Compound name not available to fetch hazard pictograms for {compound_data.get('MolecularFormula', 'unknown')}.")
-
-        # Get and render pictograms for products
-        st.subheader("Products Hazard Pictograms")
-        for product_data in products:
-            product_name = product_data.get("Title")
-            if product_name:
-                hazard_urls = get_hazard_from_pugview_data(product_name)
-                render_svg(hazard_urls)
-            else:
-                st.info(f"Product name not available to fetch hazard pictograms for {product_data.get('MolecularFormula', 'unknown')}.")
-
-        # Get and render pictograms for solvents
-        st.subheader("Solvents Hazard Pictograms")
-        for solvant_data in solvants:
-            solvant_name = solvant_data.get("Title")
-            if solvant_name:
-                hazard_urls = get_hazard_from_pugview_data(solvant_name)
-                render_svg(hazard_urls)
-            else:
-                st.info(f"Solvent name not available to fetch hazard pictograms for {solvant_data.get('MolecularFormula', 'unknown')}.")
-
-        # Get and render pictograms for catalyzers
-        st.subheader("Catalyzers Hazard Pictograms")
-        for catalyzer_data in catalyzers:
-            catalyzer_name = catalyzer_data.get("Title")
-            if catalyzer_name:
-                hazard_urls = get_hazard_from_pugview_data(catalyzer_name)
-                render_svg(hazard_urls)
-            else:
-                st.info(f"Catalyzer name not available to fetch hazard pictograms for {catalyzer_data.get('MolecularFormula', 'unknown')}.")
-
+        temperature_assessment = temperature_efficiency(temperature) if temperature is not None else None
+        pressure_assessment = pressure_efficiency(pressure) if pressure is not None else None
+       
 
     except ValueError as e:
         st.error(str(e))
         return None
-
-
-    # You could later add temperature/pressure/catalyst analysis here
 
     st.success("Analysis complete!")
 
@@ -209,6 +152,7 @@ def analyze():
         "temperature_efficiency": temperature_assessment,
         "pressure_efficiency": pressure_assessment,
     }
+
 
 
 with st.container():
@@ -305,10 +249,13 @@ with st.container():
         with st.container():
             col_left, col_center, col_right = st.columns([1, 1, 1])
             with col_center:
-                if st.button("RUN ANALYSIS", key="run_analysis", help="Click to start analysis", type="primary"):
+                if st.button("RUN ANALYSIS", key="run_analysis", help="Click to start analysis"):
                     result = analyze()
-                    st.session_state.result = result
-                    st.rerun()
+                    if result:
+                        st.session_state.result = result
+                        st.session_state.run_pictos = True  
+                    else:
+                        st.warning("Analysis returned nothing.")
 
 st.markdown("---")
 
@@ -329,6 +276,41 @@ with st.container():
         if "pressure_efficiency" in result and result["pressure_efficiency"]:
             st.write(f"**Pressure conditions:** {result['pressure_efficiency']}")
 
+        # === PICTOGRAMS ===
+        if st.session_state.get("run_pictos", False):
+            st.markdown("---")
+            st.subheader("Hazard Pictograms")
+
+            def render_pictograms(title, data_list):
+                st.subheader(f"{title} Hazard Pictograms")
+                for item in data_list:
+                    name = item.get("Title")
+                    if name:
+                        hazard_data = get_hazard_from_pugview_data(name)
+                        if isinstance(hazard_data, list) and hazard_data:
+                            urls = extract_pictogram_urls(hazard_data)
+                            if urls:
+                                st.write(f"**{name}**")
+                                cols = st.columns([0.1] * len(urls))
+                                for i, url in enumerate(urls):
+                                    with cols[i]:
+                                        render_svg([url])
+                            else:
+                                st.info(f"{name}: No pictogram URLs found.")
+                        elif isinstance(hazard_data, dict) and 'Error' in hazard_data:
+                            st.warning(f"{name}: {hazard_data['Error']}")
+                        else:
+                            st.info(f"{name}: No pictogram data found.")
+                    else:
+                        st.info("No compound name available.")
+
+
+            render_pictograms("Compounds", st.session_state.get("compounds", []))
+            render_pictograms("Products", st.session_state.get("product", []))
+            render_pictograms("Solvents", st.session_state.get("solvants", []))
+            render_pictograms("Catalyzers", st.session_state.get("catalyzer", []))
+
     else:
         st.write("No analysis results available.")
+
 
