@@ -26,27 +26,38 @@
 
 ## 📖 Contents
 
+- [Introduction](#-introduction)
 - [Features](#-features)
 - [Usage](#-usage)
 - [Installation](#-Setup)
 - [Development installation](#-development-installation)
 - [License](#-license)
 
+## 🖊️ Introduction
+
+Green Chemistry is a project based on chemical reaction sustainaility. In the context of growing environmental challenges and climate change, it is crucial for scientists to understand and minimize the ecological impact of their work. This tool is designed to raise awareness and support decision-making by evaluating the environmental and human impact of a given reaction—while also suggesting greener alternatives whenever possible. 
+The project features an interactive Streamlit interface where users can input solvents, reactants, metal catalyst, products and reaction conditions (temperature and pressure). The interface output is then a summary of the reaction's environmental footprint. Green Chemistry is designed to evaluate all types of chemical reactions, however, the focus is put on coupling reactions, as they are among the most widely used transformations in chemistry. 
+This project is inspired by the 12 principles of Green Chemistry. 
 
 ## 🌱 Features
 
+This package allows users to: 
+
+- Evaluates atom economy of their reaction 
+- Estimate energy consumption based on temperature and pressure conditions
+- Asses the toxicity of the metal catalyst used
+- Identify GHS hazard pictograms for each compound involved
+- Suggest greener alternatives when available to reduce environmental impact
+
+
 ## 🔥 Usage
 
-```python
-from mypackage import main_func
-
-# One line to rule them all
-result = main_func(data)
 ```
-
-This usage example shows how to quickly leverage the package's main functionality with just one line of code (or a few lines of code). 
-After importing the `main_func` (to be renamed by you), you simply pass in your `data` and get the `result` (this is just an example, your package might have other inputs and outputs). 
-Short and sweet, but the real power lies in the detailed documentation.
+git clone https://github.com/InesHamouni/Green-chemistry.git
+cd Green-chemistry
+conda env create -f env.yml
+conda activate green_env
+```
 
 ## 👩‍💻 Installation
 
