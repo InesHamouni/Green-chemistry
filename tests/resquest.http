@@ -1,3 +1,5 @@
+# These tests were realized to understand how the API is built and how to call it in the functions
+
 ### test 1
 GET https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2244/property/MolecularFormula,Title,MolecularWeight/json
 
