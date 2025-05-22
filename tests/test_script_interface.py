@@ -4,7 +4,7 @@ import streamlit as st
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-# test render function
+# test analyze function in script_interface.py
 
 from green_chemistry.script_interface import analyze
 
