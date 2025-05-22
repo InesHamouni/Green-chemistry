@@ -2,14 +2,18 @@
 import streamlit as st
 import urllib.parse
 import requests
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 # import our functions
-from atom_economy import atom_economy
-from temperature_efficiency import temperature_efficiency
-from pressure_efficiency import pressure_efficiency
-from metal_center import get_metal_impact
-from convert_pictograms import render_svg
-from picto import get_pictos
+from green_chemistry.atom_economy import atom_economy
+from green_chemistry.temperature_efficiency import temperature_efficiency
+from green_chemistry.pressure_efficiency import pressure_efficiency
+from green_chemistry.metal_center import get_metal_impact
+from green_chemistry.convert_pictograms import render_svg
+from green_chemistry.picto import get_pictos
 
 # allows the page to field all the space
 st.markdown("""

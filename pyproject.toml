@@ -39,9 +39,12 @@ tracker = "https://github.com/InesHamouni/Green-chemistry-ppchem-project-/issues
 [project.optional-dependencies]
 test = [
     "hypothesis",
+    "streamlit",
     "pytest",
     "pytest-cov",
+    "pytest-mock",
     "tox",
+    "requests",
     "genbadge[coverage]",
 ]
 doc = [

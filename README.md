@@ -35,9 +35,12 @@
 
 ## 🖊️ Introduction
 
-Green Chemistry is a project based on chemical reaction sustainaility. In the context of growing environmental challenges and climate change, it is crucial for scientists to understand and minimize the ecological impact of their work. This tool is designed to raise awareness and support decision-making by evaluating the environmental and human impact of a given reaction—while also suggesting greener alternatives whenever possible. 
-The project features an interactive Streamlit interface where users can input solvents, reactants, metal catalyst, products and reaction conditions (temperature and pressure). The interface output is then a summary of the reaction's environmental footprint. Green Chemistry is designed to evaluate all types of chemical reactions, however, the focus is put on coupling reactions, as they are among the most widely used transformations in chemistry. 
-This project is inspired by the 12 principles of Green Chemistry. 
+🌱 Green Chemistry is a project based on chemical reaction sustainaility. In the context of growing environmental challenges and climate change 🌍, it is crucial for scientists to understand and minimize the ecological impact of their work. This tool is designed to raise awareness and support decision-making by evaluating the environmental and human impact of a given reaction, while also suggesting greener alternatives whenever possible 💡.  
+
+🧪 The project features an interactive Streamlit interface where users can input solvents, reactants, metal catalyst, products and reaction conditions (temperature and pressure). The interface output is then a summary of the reaction's environmental footprint 📊.  
+
+Green Chemistry is designed to evaluate all types of chemical reactions, however, the focus is put on coupling reactions, as they are among the most widely used transformations in chemistry.   
+This project is inspired by the 12 principles of Green Chemistry ♻️. 
 
 ## 🌱 Features
 
@@ -52,31 +55,52 @@ This package allows users to:
 
 ## 🔥 Usage
 
+Launch the Streamlit interface to evaluates the environmental impact of your chemical reaction: 
 ```
-git clone https://github.com/InesHamouni/Green-chemistry.git
-cd Green-chemistry
-conda env create -f env.yml
-conda activate green_env
+streamlit run script_interface.py
 ```
+Once the interface is running: solvents, compounds, products, and catalysts can be add and the reaction conditions can be set (temperature and pressure).   
+Make sure to click the "Add" button after each input, then hit "Run Analysis".  
+
+In just one click, you will get a complete analysis:  
+
+⚠️ Hazard pictograms, 🧪 Atom economy, and 🌡️ Reaction condition efficiency.
+
+When you're done, return to the terminal and press ```Ctrl+C``` to close the interface.
+
 
 ## 👩‍💻 Installation
 
-Create a new environment, you may also give the environment a different name. 
+To run the project locally, make sure you are properly setup using the following steps (commands): 
+
+First, clone the Green-chemistry repository on your computer, which allows you to downloads the project files from Github to your computer 
+```
+git clone https://github.com/InesHamouni/Green-chemistry.git
+```
+Then, access the project directory.
+```
+cd Green-chemistry
+```
+Create a new environment from the repository's env.yml file.
+```
+conda env create -f env.yml
+```
+Activate this enviroment.
+```
+conda activate green_env
+```
+
+Once the environment is activate go to the correct folder and launch the Streamlit interface. 
 
 ```
-conda create -n green_chemistry python=3.10 
+(green_env) cd src/green_chemistry
+(green_env) streamlit run script_interface.py
 ```
 
-```
-conda activate green_chemistry
-(conda_env) $ pip install .
-```
+At this point, everything is setup on your computer and the Streamlit interface is accessible via your browser. 
+Enjoy exploring the interface !!
 
-If you need jupyter lab, install it 
-
-```
-(green_chemistry) $ pip install jupyterlab
-```
+To stop the Streamlit interface, just return to your terminal and press ```Ctrl+C```.
 
 
 ## 🛠️ Development installation
@@ -100,13 +124,14 @@ Then add and commit changes as usual.
 To install the package, run
 
 ```
-(green_chemistry) $ pip install -e ".[test,doc]"
+(green_env) $ pip install -e ".[test,doc]"
 ```
 
 ### Run tests and coverage
 
-(green_chemistry) $ pip install tox
-(green_chemistry) $ tox
+```
+(green_env) tox
+```
 
 
 

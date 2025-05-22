@@ -14,14 +14,15 @@ def pressure_efficiency(pressure):
             Pressure assessment
 
     """
+    
     if pressure == 1:
         assessment_P = "atmospheric pressure, zero energy consumption"
-    if 1 != pressure < 5:
+    elif 1 < pressure < 5:
         assessment_P = "low energy consumption"
     elif 5 <= pressure < 30:
         assessment_P = "moderate energy consumption"
     elif pressure >= 30:
         assessment_P = "high energy consumption"
-
     return assessment_P
+
 
