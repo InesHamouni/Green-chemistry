@@ -2,6 +2,10 @@
 import streamlit as st
 import urllib.parse
 import requests
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 # import our functions
 from green_chemistry.atom_economy import atom_economy
