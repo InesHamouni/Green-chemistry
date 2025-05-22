@@ -62,7 +62,8 @@ streamlit run script_interface.py
 Once the interface is running: solvents, compounds, products, and catalysts can be add and the reaction conditions can be set (temperature and pressure).   
 Make sure to click the "Add" button after each input, then hit "Run Analysis".  
 
-In just one click, you will get a complete analysis:
+In just one click, you will get a complete analysis:  
+
 ⚠️ Hazard pictograms, 🧪 Atom economy, and 🌡️ Reaction condition efficiency.
 
 When you're done, return to the terminal and press ```Ctrl+C``` to close the interface.
@@ -123,14 +124,13 @@ Then add and commit changes as usual.
 To install the package, run
 
 ```
-(green_chemistry) $ pip install -e ".[test,doc]"
+(green_env) $ pip install -e ".[test,doc]"
 ```
 
 ### Run tests and coverage
 
 ```
-(green_chemistry) $ pip install tox
-(green_chemistry) $ tox
+(green_env) tox
 ```
 
 
