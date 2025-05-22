@@ -31,7 +31,7 @@ st.markdown("""
 def query_pubchem_api(compound_name):
     # make a GET HTTP request to the PubChem API
     urlencode_compound_name = urllib.parse.quote(compound_name)
-    url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{urlencode_compound_name}/property/MolecularFormula,MolecularWeight,Title/JSON"
+    url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{urlencode_compound_name}/property/MolecularFormula,MolecularWeight,Title,SMILES/JSON"
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
@@ -203,7 +203,7 @@ with st.container():
     col1, spacer1, col2, spacer2, col3 = st.columns([1.2, 0.1, 1.2, 0.1, 1.2])
 # compound addition in first column
     with col1:
-        st.write("# Compounds")
+        st.write("#Reagents")
 
         if "compounds" not in st.session_state:
             st.session_state.compounds = []
