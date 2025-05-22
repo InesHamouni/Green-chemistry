@@ -1,20 +1,18 @@
 import sys
 import os
+import pytest
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
 from green_chemistry.metal_center import get_metal_impact
 
-def test_known_metal_output_format():
-    """Test that a known metal returns a formatted string with expected keywords."""
-    result = get_metal_impact("Pt")
-    assert isinstance(result, str)
-    assert "Platinum" in result
-    assert "**Human toxicity**" in result
-    assert "**Environmental impact**" in result
-    assert "**Availability**" in result
-
-def test_unknown_metal():
-    """Test that an unknown metal returns the correct fallback message."""
-    result = get_metal_impact("Xx")
-    assert result == "No data available for Xx"
+@pytest.mark.parametrize("metal, expected_substrings", [
+    ("Pd", ["Palladium", "Moderate", "bioaccumulation", "Rare"]),
+    ("Fe", ["Iron", "Low", "minimal", "abundant"]),
+    ("Os", ["Osmium", "highly toxic", "aquatic life", "Extremely rare"]),
+    ("Xx", ["No data available for Xx"]),
+])
+def test_get_metal_impact(metal, expected_substrings):
+    result = get_metal_impact(metal)
+    for substring in expected_substrings:
+        assert substring in result
