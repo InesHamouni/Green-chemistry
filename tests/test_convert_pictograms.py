@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'
 
 # test render function
 
-from green_chemistry.convert_pictograms import render_svg
+from green_chemistry.convert_svg_pictograms_html import render_svg
 
 def test_render_svg_multiple_urls():
     urls = [

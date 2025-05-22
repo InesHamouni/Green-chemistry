@@ -9,8 +9,8 @@ def get_hazard_from_pugview_data(compound_name: str):
         compound_name (str): The name of the chemical compound.       
 
     Returns:
-        dict: A dictionary containing the requested data, or None if an error occurs.
-              The dictionary structure depends on the data_type.
+        Json : A Json containing the requested data, or None if an error occurs.
+              The Json structure depends on the data_type.
               If data_type is 'Hazard', returns a list of hazard statements
               under the key 'Hazard Statements'.
     """
@@ -75,7 +75,7 @@ def extract_pictogram_urls(hazard_data: json):
     Extracts unique pictogram URLs from the PubChem hazard data.
 
     Args:
-        hazard_data (list or dict): The JSON data containing hazard information.
+        hazard_data (json): The JSON data containing hazard information.
 
     Returns:
         list: A list of unique pictogram URLs.
@@ -96,11 +96,20 @@ def extract_pictogram_urls(hazard_data: json):
 
 def get_pictos(compound_name: str):
 
-    """ Get compound name as an argument and stock in a list the pictograms found 
-    with the get_hazard_from_pugview_data function 
+    """ 
+    Retrieves hazard pictogram URLs for a given chemical compound.
+
+    This function fetches hazard data using `get_hazard_from_pugview_data()`, then
+    extracts the pictogram image URLs using `extract_pictogram_urls()` and stores 
+    them in a list.
+
+    Args:
+        compound_name (str): The name of the chemical compound (e.g., "lead").
+
+    Returns:
+        list: A list of strings representing the URLs of the hazard pictograms.  
     
-    And with the extract_pictogram_urls we only get the urls from the jason file
-    return by the previous function as a list """
+    """
 
     hazard_data = get_hazard_from_pugview_data(compound_name)
     pictogram_urls = []
@@ -115,8 +124,6 @@ def get_pictos(compound_name: str):
             print("\nExtracted Unique Pictogram URLs:")
             for url in pictogram_urls:
                 print(url)
-            # Assuming you have 'st' from streamlit in your environment
-            # render_svg(pictogram_urls)
         else:
             print("\nNo pictogram URLs found.")
     elif hazard_data:

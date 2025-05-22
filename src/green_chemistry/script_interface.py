@@ -12,8 +12,8 @@ from green_chemistry.atom_economy import atom_economy
 from green_chemistry.temperature_efficiency import temperature_efficiency
 from green_chemistry.pressure_efficiency import pressure_efficiency
 from green_chemistry.metal_center import get_metal_impact
-from green_chemistry.convert_pictograms import render_svg
-from green_chemistry.picto import get_pictos
+from green_chemistry.convert_svg_pictograms_html import render_svg
+from green_chemistry.extraction_picto import get_pictos
 
 # allows the page to field all the space
 st.markdown("""
@@ -94,6 +94,44 @@ def add_catalyzer(catalyzer_name):
 
 # calculation function    
 def analyze():
+    """
+    Performs a green chemistry analysis based on user-provided compounds, products,
+    solvents, catalysts, temperature, and pressure (if available).
+
+    It calculates the atom economy, analyzes the environmental impact of metal
+    catalysts, assesses temperature and pressure efficiency, and retrieves
+    safety pictograms for the compounds, products, solvents, and catalysts.
+
+    Args:
+        None. The function relies on the `st.session_state` to access the data.
+        Specifically, it expects the following keys to be present in the session state:
+            - "compounds": A list of dictionaries, where each dictionary represents a compound
+                           and may contain a "MolecularWeight" and "Title".
+            - "product": A list of dictionaries, where each dictionary represents a product
+                         and should contain a "MolecularWeight" and "Title".
+            - "solvents": A list of dictionaries, where each dictionary represents a solvent
+                          and may contain a "Title".
+            - "catalyzer": A list of dictionaries, where each dictionary represents a catalyst
+                           and may contain a "MolecularFormula" and "Title".
+            - "temperature": A numerical value representing the reaction temperature.
+            - "pressure": A numerical value representing the reaction pressure.
+
+    Returns:
+        dict or None: A dictionary containing the analysis results if successful,
+                     otherwise None. The dictionary has the following keys:
+            - "atom_economy": A string representing the atom economy value and its verdict.
+            - "metal_analysis": A string summarizing the environmental impact of metal catalysts.
+            - "temperature_efficiency": A string assessing the temperature efficiency.
+            - "pressure_efficiency": A string assessing the pressure efficiency.
+            - "compounds_pictos": A list of URLs of safety pictograms for the compounds.
+            - "products_pictos": A list of URLs of safety pictograms for the products.
+            - "solvents_pictos": A list of URLs of safety pictograms for the solvents.
+            - "catalyzers_pictos": A list of URLs of safety pictograms for the catalysts.
+
+        If there's an error (e.g., missing data, invalid input), it prints an error
+        message using `st.error` and returns None.
+    """
+    
     # Ensure data is present
     compounds = st.session_state.get("compounds", [])
     products = st.session_state.get("product", [])
@@ -198,6 +236,7 @@ def analyze():
         "catalyzers_pictos": catalyzers_urls,
     }
 
+#SET-UP of THE STREAMLIT INTERFACE
 
 with st.container():
     col1, spacer1, col2, spacer2, col3 = st.columns([1.2, 0.1, 1.2, 0.1, 1.2])

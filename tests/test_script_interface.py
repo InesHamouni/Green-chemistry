@@ -8,7 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'
 
 from green_chemistry.script_interface import analyze
 
-def test_analyze_minimal_valid_data():
+def test_analyze():
     # Setup minimal working session_state
     st.session_state["compounds"] = [{
         "MolecularWeight": "18.0",  # Water, for example

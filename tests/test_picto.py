@@ -5,10 +5,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'
 
 # test functions to extract the pictograms for each compound from PubChem
 
-from green_chemistry.picto import get_hazard_from_pugview_data, extract_pictogram_urls, get_pictos
+from green_chemistry.extraction_picto import get_hazard_from_pugview_data, extract_pictogram_urls, get_pictos
 
 def test_get_hazard_from_pugview_data():
-    """ the lead is taken as the compound example"""
+    """ the lead is taken as the compound example """
 
     data = get_hazard_from_pugview_data("lead")
     assert isinstance(data, list) or 'Error' in data
