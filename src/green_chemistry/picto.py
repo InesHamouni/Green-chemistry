@@ -47,9 +47,6 @@ def get_hazard_from_pugview_data(compound_name: str):
                         for subsection in section.get('Section', []):  # Iterate subsections, handle missing key
                             if subsection.get('TOCHeading') == 'GHS Classification':
                                 for phrase in subsection.get('Information', []):
-                                    # if phrase.get('Name') == 'GHS Hazard Statements':
-                                    #     hazard_statements.extend(phrase.get('Value').get('StringWithMarkup', ''))
-                                    #elif to change if add previous lines
                                     if phrase.get('Name') == 'Pictogram(s)':
                                         hazard_statements.extend(phrase.get('Value').get('StringWithMarkup', ''))
                                     
@@ -73,7 +70,7 @@ def get_hazard_from_pugview_data(compound_name: str):
         return {'Error': f'An unexpected error occurred: {e}'}
     
 
-def extract_pictogram_urls(hazard_data):
+def extract_pictogram_urls(hazard_data: json):
     """
     Extracts unique pictogram URLs from the PubChem hazard data.
 
