@@ -73,7 +73,7 @@ def get_hazard_from_pugview_data(compound_name: str):
         return {'Error': f'An unexpected error occurred: {e}'}
     
 
-def extract_pictogram_urls(hazard_data):
+def extract_pictogram_urls(hazard_data: json):
     """
     Extracts unique pictogram URLs from the PubChem hazard data.
 
