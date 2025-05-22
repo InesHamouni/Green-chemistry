@@ -167,16 +167,17 @@ def analyze():
             if formula:
                 analysis = get_metal_impact(formula)
                 if analysis and not analysis.startswith("No data"):
-                    # Nettoyage et formatage en une ligne
+
                     lines = analysis.split('\n')
                     metal_name = lines[0].replace('---', '').strip()
-                    properties = ' | '.join(
-                        f"{line.split(':')[0].strip()}: {line.split(':')[1].strip()}" 
+
+                    properties = '\n\n'.join(
+                        f"*{line.split(':', 1)[0].strip()}*: {line.split(':', 1)[1].strip()}"
                         for line in lines[1:] if ':' in line
                     )
-                    metal_analysis_lines.append(f"{metal_name}{properties}")
-        
-        metal_analysis_str = " | ".join(metal_analysis_lines) if metal_analysis_lines else "No metal catalyst data"
+                    metal_analysis_lines.append(f"**{metal_name}**\n\n{properties}")
+
+        metal_analysis_str = "\n\n".join(metal_analysis_lines) if metal_analysis_lines else "No metal catalyst data"
 
         temperature_assessment = None
         if temperature is not None:
@@ -242,7 +243,7 @@ with st.container():
     col1, spacer1, col2, spacer2, col3 = st.columns([1.2, 0.1, 1.2, 0.1, 1.2])
 # compound addition in first column
     with col1:
-        st.write("#Reagents")
+        st.write("# Reagents")
 
         if "compounds" not in st.session_state:
             st.session_state.compounds = []
@@ -349,6 +350,7 @@ with st.container():
 
         if "metal_analysis" in result:
             st.markdown(f"**Catalyst Metal Analysis:** {result['metal_analysis']}")
+
 
         if "temperature_efficiency" in result and result["temperature_efficiency"]:
             st.write(f"**Temperature conditions:** {result['temperature_efficiency']}")
