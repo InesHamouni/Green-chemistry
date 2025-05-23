@@ -1,6 +1,9 @@
 import sys
 import os 
 import streamlit as st
+import ydf
+model_1 = ydf.load_model("buchwald_classifier_1")
+model_2 = ydf.load_model("buchwald_classifier_2")
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
