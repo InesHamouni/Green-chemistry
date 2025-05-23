@@ -5,7 +5,13 @@ import requests
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import ydf
+import torch
+model_name = "DeepChem/ChemBERTa-77M-MLM"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model_1 = ydf.load_model("buchwald_classifier_1")
+model_2 = ydf.load_model("buchwald_regressor_1")
 
 # import our functions
 from green_chemistry.atom_economy import atom_economy
@@ -14,6 +20,7 @@ from green_chemistry.pressure_efficiency import pressure_efficiency
 from green_chemistry.metal_center import get_metal_impact
 from green_chemistry.convert_svg_pictograms_html import render_svg
 from green_chemistry.extraction_picto import get_pictos
+from green_chemistry.file_regressor import tokenize, tokenizing, classify_regress
 
 # allows the page to field all the space
 st.markdown("""
@@ -226,6 +233,22 @@ def analyze():
             if catalyzer_name:
                 catalyzers_urls.extend(get_pictos(catalyzer_name))
 
+#Getting all da SMILES
+        reagent_smiles=[]
+        solvent_smiles=[]
+        for reagent_data in reagents:
+            reagent_smile = reagent_data.get("SMILES")
+            if reagent_smile:
+                reagent_smiles.append(reagent_smile)
+        for solvent_data in solvents:
+            solvent_smile = solvent_data.get("SMILES")
+            if solvent_smile:
+                solvent_smiles.append(solvent_smile)
+
+#Treating the SMILES data
+        reagent_tokens, solvent_tokens = tokenizing(reagent_smiles, solvent_smiles)
+        predicted_yield=classify_regress(reagent_tokens, solvent_tokens)
+
 
     except ValueError as e:
         st.error(str(e))
@@ -242,6 +265,7 @@ def analyze():
         "products_pictos": products_urls,
         "solvents_pictos": solvents_urls,
         "catalyzers_pictos": catalyzers_urls,
+        "predicted_yield": predicted_yield
     }
 
 #SET-UP of THE STREAMLIT INTERFACE
@@ -358,6 +382,8 @@ with st.container():
         if "metal_analysis" in result:
             st.markdown(f"**Catalyst Metal Analysis:** {result['metal_analysis']}")
 
+        if "predicted_yield" in result:
+            st.write(f"**Yield:** {result['predicted_yield']}")
 
         if "temperature_efficiency" in result and result["temperature_efficiency"]:
             st.write(f"**Temperature conditions:** {result['temperature_efficiency']}")
@@ -423,6 +449,8 @@ with st.container():
                 render_svg(catalyzer_svg_list)
         else:
             st.info("Catalyzer names don't have hazard pictograms.")
+
+
 
     else:
         st.write("No analysis results available.")
