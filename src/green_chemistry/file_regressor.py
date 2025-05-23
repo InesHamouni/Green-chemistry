@@ -1,12 +1,12 @@
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from tokenizer_home_made import tokenize
+import ydf
 model_1 = ydf.load_model("buchwald_classifier_1")
 model_2 = ydf.load_model("buchwald_regressor_1")
 model_name = "DeepChem/ChemBERTa-77M-MLM"
 model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=1)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-
 def tokenize(smiles):
 
     token_ids = tokenizer.encode(
@@ -51,6 +51,9 @@ def classify_regress(reagent_tokens, solvent_tokens):
 
     if not ligand_list and len(additive_list) > 1:
         ligand_list.append(additive_list[1])
+    else:
+        ligand_list = [""]
+
 
     if base_list:
         base_list = [base_list[0]]

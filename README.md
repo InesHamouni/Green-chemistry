@@ -50,7 +50,7 @@ This package allows users to:
 - Estimate energy consumption based on temperature and pressure conditions
 - Asses the toxicity of the metal catalyst used
 - Identify GHS hazard pictograms for each compound involved
-- Suggest greener alternatives when available to reduce environmental impact
+- Predict yield of the reaction
 
 
 ## 🔥 Usage
@@ -67,7 +67,7 @@ Make sure to click the "Add" button after each input, then hit "Run Analysis".
 </p>
 
 In just one click, you will get a complete analysis: 
-⚠️ Hazard pictograms, 🧪 Atom economy, and 🌡️ Reaction condition efficiency.
+⚠️ Hazard pictograms, 🧪 Atom economy, 🌡️ Reaction condition efficiency and a yield prediction.
 
 When you're done, return to the terminal and press ```Ctrl+C``` to close the interface.
 
