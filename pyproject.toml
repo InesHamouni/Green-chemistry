@@ -54,6 +54,9 @@ doc = [
     "sphinx-copybutton",
 ]
 
+[tool.hatch.build]
+sources = ["src"]
+
 [tool.hatch.version]
 path = "src/green_chemistry/__init__.py"
 
