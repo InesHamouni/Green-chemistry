@@ -49,9 +49,11 @@ def add_reagent(reagent_name):
     if reagent_data:
         st.session_state.reagents.append(reagent_data)
         st.success(f"reagent '{reagent_name}' added!")
+        return True
 
     else:
         st.error(f"Failed to fetch data for {reagent_name}")
+        return False
 
 # function to add molecular formula from chemical name of product
 def add_product(product_name):
@@ -62,9 +64,11 @@ def add_product(product_name):
         if product_data:
             st.session_state.product.append(product_data)
             st.success(f"Product '{product_name}' added!")
+            return True
 
         else:
             st.error(f"Failed to fetch data for {product_name}")
+            return False
 
 
 # function to add molecular formula from chemical name of solvents
@@ -76,8 +80,10 @@ def add_solvents(solvents_name):
     if solvents_data:
         st.session_state.solvents.append(solvents_data)
         st.success(f"Solvent '{solvents_name}' added!")
+        return True
     else:
         st.error(f"Failed to fetch data for {solvents_name}")
+        return False
 
 # function to add molecular formula from chemical name of catalyzers
 def add_catalyzer(catalyzer_name):
@@ -88,8 +94,10 @@ def add_catalyzer(catalyzer_name):
     if catalyzer_data:
         st.session_state.catalyzer.append(catalyzer_data)
         st.success(f"Catalyzer '{catalyzer_name}' added!")
+        return True
     else:
         st.error(f"Failed to fetch data for {catalyzer_name}")
+        return False
 
 # calculation function    
 def analyze():
@@ -257,8 +265,8 @@ with st.container():
         st.text_input("Enter reagent name", key="reagent_name")
         if st.button("Add Reagent"):
             reagent_name = st.session_state.reagent_name
-            add_reagent(reagent_name)
-            st.rerun()
+            ret = add_reagent(reagent_name)
+            if ret: st.rerun()
 
         #Product list
         st.write("# Products")
@@ -276,8 +284,8 @@ with st.container():
         st.text_input("Enter product name", key="product_name")
         if st.button("Add Product"):
             product_name = st.session_state.product_name
-            add_product(product_name)
-            st.rerun()
+            ret = add_product(product_name)
+            if ret: st.rerun()
 
         
 
@@ -297,8 +305,8 @@ with st.container():
         st.text_input("Enter solvents/auxiliaries name", key="solvents_name")
         if st.button("Add Solvents/Auxiliaries"):
             solvents_name = st.session_state.solvents_name
-            add_solvents(solvents_name)
-            st.rerun()
+            ret = add_solvents(solvents_name)
+            if ret: st.rerun()
 
 
     # catalyzer addition in the interface in the second column        
@@ -316,8 +324,8 @@ with st.container():
         st.text_input("Enter metal center name", key="catalyzer_name")
         if st.button("Add Catalyzer"):
             catalyzer_name = st.session_state.catalyzer_name
-            add_catalyzer(catalyzer_name)
-            st.rerun()
+            ret = add_catalyzer(catalyzer_name)
+            if ret: st.rerun()
 
 # addition of conditions
     with col3:
