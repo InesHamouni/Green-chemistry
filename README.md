@@ -22,7 +22,7 @@
 - Clara Veron
 - Inès Hamouni 
 - Thomas Cohen 
-- Edward Vondoderer
+- Edward Von Doderer
 
 ## 📖 Contents
 
