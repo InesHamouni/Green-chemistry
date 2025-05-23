@@ -35,9 +35,9 @@
 
 ## 🖊️ Introduction
 
-🌱 Green Chemistry is a project based on chemical reaction sustainaility. In the context of growing environmental challenges and climate change 🌍, it is crucial for scientists to understand and minimize the ecological impact of their work. This tool is designed to raise awareness and support decision-making by evaluating the environmental and human impact of a given reaction, while also suggesting greener alternatives whenever possible 💡.  
+🌱 The Green Chemistry project is based on chemical reaction sustainaility. Concerning the growing environmental challenges and climate change, scientists need to understand how their work impact the environment and minimize it. This tool is aimed at raising awareness and supporting decision-making by evaluating the environmental and human impact of a given reaction, while also suggesting greener alternatives whenever possible 💡.  
 
-🧪 The project features an interactive Streamlit interface where users can input solvents, reactants, metal catalyst, products and reaction conditions (temperature and pressure). The interface output is then a summary of the reaction's environmental footprint 📊.  
+🧪 The project features an interactive Streamlit interface where users can input solvents, reactants, metal catalyst, products and reaction conditions (temperature and pressure). The interface output is then a summary of the reaction's environmental footprint.  
 
 Green Chemistry is designed to evaluate all types of chemical reactions, however, the focus is put on coupling reactions, as they are among the most widely used transformations in chemistry.   
 This project is inspired by the 12 principles of Green Chemistry ♻️. 
