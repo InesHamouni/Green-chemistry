@@ -10,7 +10,7 @@ from green_chemistry.script_interface import analyze
 
 def test_analyze():
     # Setup minimal working session_state to ensure analyze function is working well
-    st.session_state["compounds"] = [{
+    st.session_state["reagents"] = [{
         "MolecularWeight": "18.0",  # Water, for example
         "Title": "Water",
     }]
