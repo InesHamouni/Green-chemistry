@@ -250,7 +250,7 @@ with st.container():
         else:    
             for reagent in st.session_state.reagents:
                 st.write(reagent.get("MolecularFormula"))
-            if st.button("Remove reagents"):
+            if st.button("Remove Reagents"):
                 st.session_state.reagents.pop()
                 st.rerun() 
 
@@ -269,7 +269,7 @@ with st.container():
         else:    
             for product in st.session_state.product:
                 st.write(product.get("MolecularFormula"))
-            if st.button("Remove product"):
+            if st.button("Remove Product"):
                 st.session_state.product.pop()
                 st.rerun()            
 
@@ -286,16 +286,16 @@ with st.container():
         st.write('# Solvents / Auxiliaries')
         if "solvents" not in st.session_state:
             st.session_state.solvents = []
-            st.write("No solvents found. Please add some solvents.")
+            st.write("No solvents/auxiliaries found. Please add some solvents.")
         else:    
             for solvent in st.session_state.solvents:
                 st.write(solvent.get("MolecularFormula"))
-            if st.button("Remove solvent"):
+            if st.button("Remove Solvent/Auxiliaries"):
                 st.session_state.solvents.pop()
                 st.rerun() 
 
-        st.text_input("Enter solvents name", key="solvents_name")
-        if st.button("Add Solvents"):
+        st.text_input("Enter solvents/auxiliaries name", key="solvents_name")
+        if st.button("Add Solvents/Auxiliaries"):
             solvents_name = st.session_state.solvents_name
             add_solvents(solvents_name)
             st.rerun()
@@ -309,7 +309,7 @@ with st.container():
         else:
             for catalyzer in st.session_state.catalyzer:
                 st.write(catalyzer.get("MolecularFormula"))
-                if st.button("Remove catalyzer"):
+                if st.button("Remove Catalyzer"):
                     st.session_state.catalyzer.pop()
                     st.rerun()
                            
