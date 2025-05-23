@@ -40,18 +40,18 @@ def query_pubchem_api(compound_name):
     else:
         return None
 
-# function to add molecular formula from chemical name of compound
-def add_compound(compound_name):
-    compound_data = query_pubchem_api(compound_name)
+# function to add molecular formula from chemical name of reagent
+def add_reagent(reagent_name):
+    reagent_data = query_pubchem_api(reagent_name)
 
-    print(compound_data) # debugging
+    print(reagent_data) # debugging
     
-    if compound_data:
-        st.session_state.compounds.append(compound_data)
-        st.success(f"Compound '{compound_name}' added!")
+    if reagent_data:
+        st.session_state.reagents.append(reagent_data)
+        st.success(f"reagent '{reagent_name}' added!")
 
     else:
-        st.error(f"Failed to fetch data for {compound_name}")
+        st.error(f"Failed to fetch data for {reagent_name}")
 
 # function to add molecular formula from chemical name of product
 def add_product(product_name):
@@ -75,7 +75,7 @@ def add_solvents(solvents_name):
     
     if solvents_data:
         st.session_state.solvents.append(solvents_data)
-        st.success(f"Compound '{solvents_name}' added!")
+        st.success(f"Solvent '{solvents_name}' added!")
     else:
         st.error(f"Failed to fetch data for {solvents_name}")
 
@@ -87,24 +87,24 @@ def add_catalyzer(catalyzer_name):
     
     if catalyzer_data:
         st.session_state.catalyzer.append(catalyzer_data)
-        st.success(f"Compound '{catalyzer_name}' added!")
+        st.success(f"Catalyzer '{catalyzer_name}' added!")
     else:
         st.error(f"Failed to fetch data for {catalyzer_name}")
 
 # calculation function    
 def analyze():
     """
-    Performs a green chemistry analysis based on user-provided compounds, products,
+    Performs a green chemistry analysis based on user-provided reagents, products,
     solvents, catalysts, temperature, and pressure (if available).
 
     It calculates the atom economy, analyzes the environmental impact of metal
     catalysts, assesses temperature and pressure efficiency, and retrieves
-    safety pictograms for the compounds, products, solvents, and catalysts.
+    safety pictograms for the reagents, products, solvents, and catalysts.
 
     Args:
         None. The function relies on the `st.session_state` to access the data.
         Specifically, it expects the following keys to be present in the session state:
-            - "compounds": A list of dictionaries, where each dictionary represents a compound
+            - "reagents": A list of dictionaries, where each dictionary represents a reagent
                            and may contain a "MolecularWeight" and "Title".
             - "product": A list of dictionaries, where each dictionary represents a product
                          and should contain a "MolecularWeight" and "Title".
@@ -122,7 +122,7 @@ def analyze():
             - "metal_analysis": A string summarizing the environmental impact of metal catalysts.
             - "temperature_efficiency": A string assessing the temperature efficiency.
             - "pressure_efficiency": A string assessing the pressure efficiency.
-            - "compounds_pictos": A list of URLs of safety pictograms for the compounds.
+            - "reagents_pictos": A list of URLs of safety pictograms for the reagents.
             - "products_pictos": A list of URLs of safety pictograms for the products.
             - "solvents_pictos": A list of URLs of safety pictograms for the solvents.
             - "catalyzers_pictos": A list of URLs of safety pictograms for the catalysts.
@@ -132,21 +132,21 @@ def analyze():
     """
     
     # Ensure data is present
-    compounds = st.session_state.get("compounds", [])
+    reagents = st.session_state.get("reagents", [])
     products = st.session_state.get("product", [])
     solvents = st.session_state.get("solvents", [])
     catalyzers = st.session_state.get("catalyzer", [])
     temperature = st.session_state.get("temperature")
 
-    if not compounds or not products:
-        st.error("Please add at least one compound and one product to perform analysis.")
+    if not reagents or not products:
+        st.error("Please add at least one reagent and one product to perform analysis.")
         return None
 
-    # Get molar masses of compounds (reactants)
+    # Get molar masses of reagents (reactants)
     reactant_masses = [
-        float(compound.get("MolecularWeight"))
-        for compound in compounds
-        if compound.get("MolecularWeight") is not None
+        float(reagent.get("MolecularWeight"))
+        for reagent in reagents
+        if reagent.get("MolecularWeight") is not None
     ]
 
     # Get molar mass of the main product (assume first product)
@@ -188,16 +188,16 @@ def analyze():
 
         
         # create empty list for pictos   
-        compounds_urls = []
+        reagents_urls = []
         solvents_urls = []
         products_urls = []
         catalyzers_urls = []
 
-        # Get pictograms for compounds
-        for compound_data in compounds:
-            compound_name = compound_data.get("Title")
-            if compound_name:
-                compounds_urls.extend(get_pictos(compound_name))
+        # Get pictograms for reagents
+        for reagent_data in reagents:
+            reagent_name = reagent_data.get("Title")
+            if reagent_name:
+                reagents_urls.extend(get_pictos(reagent_name))
             
 
         # Get pictograms for products
@@ -230,7 +230,7 @@ def analyze():
         "metal_analysis": metal_analysis_str,
         "temperature_efficiency": temperature_assessment,
         "pressure_efficiency": pressure_assessment,
-        "compounds_pictos": compounds_urls,
+        "reagents_pictos": reagents_urls,
         "products_pictos": products_urls,
         "solvents_pictos": solvents_urls,
         "catalyzers_pictos": catalyzers_urls,
@@ -240,24 +240,24 @@ def analyze():
 
 with st.container():
     col1, spacer1, col2, spacer2, col3 = st.columns([1.2, 0.1, 1.2, 0.1, 1.2])
-# compound addition in first column
+# reagent addition in first column
     with col1:
         st.write("# Reagents")
 
-        if "compounds" not in st.session_state:
-            st.session_state.compounds = []
-            st.write("No compounds found. Please add some compounds.")
+        if "reagents" not in st.session_state:
+            st.session_state.reagents = []
+            st.write("No reagents found. Please add some reagents.")
         else:    
-            for compound in st.session_state.compounds:
-                st.write(compound.get("MolecularFormula"))
+            for reagent in st.session_state.reagents:
+                st.write(reagent.get("MolecularFormula"))
             if st.button("Remove reagents"):
-                st.session_state.compounds.pop()
+                st.session_state.reagents.pop()
                 st.rerun() 
 
-        st.text_input("Enter compound name", key="compound_name")
+        st.text_input("Enter reagent name", key="reagent_name")
         if st.button("Add Reagent"):
-            compound_name = st.session_state.compound_name
-            add_compound(compound_name)
+            reagent_name = st.session_state.reagent_name
+            add_reagent(reagent_name)
             st.rerun()
 
         #Product list
@@ -358,19 +358,19 @@ with st.container():
             st.write(f"**Pressure conditions:** {result['pressure_efficiency']}")
     
         st.write("## Hazard Pictograms")
-        if "compounds_pictos" in result and st.session_state.get("compounds"):
-            st.subheader("Compounds Hazard Pictograms")
-            compound_names = [c.get("Title") for c in st.session_state["compounds"]]
-            compound_pictos = result["compounds_pictos"]
+        if "reagents_pictos" in result and st.session_state.get("reagents"):
+            st.subheader("reagents Hazard Pictograms")
+            reagent_names = [c.get("Title") for c in st.session_state["reagents"]]
+            reagent_pictos = result["reagents_pictos"]
 
-            step = len(compound_pictos) // len(compound_names) if compound_names else 0
+            step = len(reagent_pictos) // len(reagent_names) if reagent_names else 0
 
-            for i, name in enumerate(compound_names):
+            for i, name in enumerate(reagent_names):
                 st.markdown(f"**{name}**")
-                compound_svg_list = compound_pictos[i*step:(i+1)*step]
-                render_svg(compound_svg_list)
+                reagent_svg_list = reagent_pictos[i*step:(i+1)*step]
+                render_svg(reagent_svg_list)
         else:
-            st.info("Compound names don't have hazard pictograms.")
+            st.info("reagent names don't have hazard pictograms.")
 
         
         
