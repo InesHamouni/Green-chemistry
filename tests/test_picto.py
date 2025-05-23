@@ -14,7 +14,7 @@ def test_get_hazard_from_pugview_data():
     assert isinstance(data, list) or 'Error' in data
 
 def test_extract_pictogram_urls():
-    """ The Markup has been simplified for the test function and only the URL has been conserved"""
+    """ The Markup has been simplified for the test function and only the URLs have been conserved"""
     
     sample_data = [{
         "Markup": [

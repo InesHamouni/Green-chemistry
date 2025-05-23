@@ -38,7 +38,6 @@ def query_pubchem_api(compound_name):
         
         return data["PropertyTable"]["Properties"][0] if "PropertyTable" in data else None
     else:
-        st.error(f"Error fetching data for {compound_name}: {response.status_code}")
         return None
 
 # function to add molecular formula from chemical name of compound
@@ -251,12 +250,12 @@ with st.container():
         else:    
             for compound in st.session_state.compounds:
                 st.write(compound.get("MolecularFormula"))
-            if st.button("Remove compound"):
+            if st.button("Remove reagents"):
                 st.session_state.compounds.pop()
                 st.rerun() 
 
         st.text_input("Enter compound name", key="compound_name")
-        if st.button("Add Compound"):
+        if st.button("Add Reagent"):
             compound_name = st.session_state.compound_name
             add_compound(compound_name)
             st.rerun()
